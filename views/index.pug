@@ -1,0 +1,40 @@
+doctype html 
+head
+    title Chess 
+    link(rel='stylesheet', href= "/css/styles.css")
+    link(rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css' integrity='sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l' crossorigin='anonymous')
+    block styles 
+    script(src= "/js/scripts.js")
+    block scripts
+
+body 
+    span(id='errorMessage').errorMessage
+    div
+        table.chess-table.col-xs-1.col-sm-1.col-md-1
+            thead 
+                td.number-cell.col-xs-1.col-sm-1.col-md-1
+                each col in [1, 2, 3, 4, 5, 6, 7, 8]
+                    td.normal-cell.col-xs-1.col-sm-1.col-md-1=alphabet[col]
+                td.number-cell.col-xs-1.col-sm-1.col-md-1
+            tbody
+                each row in [1, 2, 3, 4, 5, 6, 7, 8]
+                    tr 
+                        td.number-cell.col-xs-1.col-sm-1.col-md-1=9-row
+                        each col in [1, 2, 3, 4, 5, 6, 7, 8]
+                            if row%2==col%2 
+                                td(id='cell_'+row+'_'+col onclick='cellClick('+row+','+col+'); return false;').normal-cell.white-cell.col-xs-1.col-sm-1.col-md-1
+                            else
+                                td(id='cell_'+row+'_'+col onclick='cellClick('+row+','+col+'); return false;').normal-cell.black-cell.col-xs-1.col-sm-1.col-md-1
+                        td.number-cell.col-xs-1.col-sm-1.col-md-1=9-row
+            tfoot 
+                td.number-cell.col-xs-1.col-sm-1.col-md-1
+                each col in [1, 2, 3, 4, 5, 6, 7, 8]
+                    td.normal-cell.col-xs-1.col-sm-1.col-md-1=alphabet[col]
+                td.number-cell.col-xs-1.col-sm-1.col-md-1
+    form(action='' name='registerForm' enctype='text/plain')
+        .form-group
+            label(for='email') Email address
+            input#email.form-control(type='email' aria-describedby='emailHelp' placeholder='Enter email')
+        button.btn.btn-primary(type='submit' onclick='register(); return false;') Register
+    form(action='' name='newGameForm' enctype='text/plain')
+        button.btn.btn-primary(type='submit' onclick='newGame(); return false;') New Game
