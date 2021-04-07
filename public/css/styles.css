@@ -13,10 +13,13 @@
 .black-cell{
     background: linear-gradient(45deg, darkgray, black);
 }
-.number-cell{
-    
-}
 .errorMessage{
     color: red;
     font-weight: bold;
+}
+.BeingMove{
+    border: 3px solid red;
+}
+.LegalMove{
+    border: 3px solid lightgreen;
 }

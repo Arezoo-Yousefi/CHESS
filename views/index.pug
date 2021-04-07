@@ -22,9 +22,9 @@ body
                         td.number-cell.col-xs-1.col-sm-1.col-md-1=9-row
                         each col in [1, 2, 3, 4, 5, 6, 7, 8]
                             if row%2==col%2 
-                                td(id='cell_'+row+'_'+col onclick='cellClick('+row+','+col+'); return false;').normal-cell.white-cell.col-xs-1.col-sm-1.col-md-1
+                                td(id='cell_'+(row-1)+'_'+(col-1) onclick='cellClick('+(row-1)+','+(col-1)+'); return false;').normal-cell.white-cell.col-xs-1.col-sm-1.col-md-1
                             else
-                                td(id='cell_'+row+'_'+col onclick='cellClick('+row+','+col+'); return false;').normal-cell.black-cell.col-xs-1.col-sm-1.col-md-1
+                                td(id='cell_'+(row-1)+'_'+(col-1) onclick='cellClick('+(row-1)+','+(col-1)+'); return false;').normal-cell.black-cell.col-xs-1.col-sm-1.col-md-1
                         td.number-cell.col-xs-1.col-sm-1.col-md-1=9-row
             tfoot 
                 td.number-cell.col-xs-1.col-sm-1.col-md-1
@@ -33,8 +33,10 @@ body
                 td.number-cell.col-xs-1.col-sm-1.col-md-1
     form(action='' name='registerForm' enctype='text/plain')
         .form-group
-            label(for='email') Email address
+            label(for='email') Email address:
             input#email.form-control(type='email' aria-describedby='emailHelp' placeholder='Enter email')
         button.btn.btn-primary(type='submit' onclick='register(); return false;') Register
     form(action='' name='newGameForm' enctype='text/plain')
         button.btn.btn-primary(type='submit' onclick='newGame(); return false;') New Game
+    form(action='' name='connectForm' enctype='text/plain')
+        button.btn.btn-primary(type='submit' onclick='connect(); return false;') Connect

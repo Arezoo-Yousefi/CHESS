@@ -27,7 +27,6 @@ app.post('/', (req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Headers', 'X-Requested-With');
     next();
-    console.log(req.body);
     let data = processRequest(req.body);
     if (data) {
         let json = JSON.stringify(data);
@@ -52,24 +51,22 @@ let processRequest = function (req) {
 
     if (req.message == "newGame") {
         let s = new serverBoard(req.id);
-        console.log(s);
-
         games.push(s);
         return { message: "OK", data: s.data, gameId: s.id };
     }
 
     if (req.message == "connect") {
         let data;
-        games.forEach(function (g) {
-            if (g.id == req.parameters[0]) {
-                g.AddPlayer(req.parameters[1]);
-                data = { message: "OK", data: g.data, gameId: g.id };
-            }
-        });
+        if(games.length > 0){
+            games[0].AddPlayer(req.id);
+            data = { message: "OK", data: games[0].data, gameId: games[0].id };  
+        }else{
+            return { message: "No empty GAME):" }
+        }
         return data;
     }
 
-    if (req.message == "Click") {
+    if (req.message == "click") {
         let data;
         if (!req.id || !req.gameId) {
             data = { message: "No Game" };
@@ -103,10 +100,6 @@ let processRequest = function (req) {
             });
         }
         return data;
-    }
-
-    if (req.message == "getCurrentGames") {
-        return { message: "OK", data: games.map(x => { return { gameId: x.id, status: x.status, owner: x.data.owner, opponent: x.data.opponent } }) };
     }
 
     return null;
@@ -154,7 +147,6 @@ function serverBoard(owner) {
     }
 
     this.click = function (playerId, X, Y) {
-        console.log({ X, Y });
         if (!(this.status & 0x80)) {
             if (this.status & 0x3) {
                 this.message = "Game has finished";
@@ -225,10 +217,8 @@ function serverBoard(owner) {
     }
 
     this.checkForLand = function (landPoint, piece, hitStatus = 'can') {//hitStatus: can, must, no
-        console.log(landPoint);
         if (landPoint.X < 0 || landPoint.X >= 8 || landPoint.Y < 0 || landPoint.Y >= 8)
             return false;
-        console.log(this.data.cellPieces[landPoint.X][landPoint.Y]);
         if (this.data.cellPieces[landPoint.X][landPoint.Y]) {
             if (this.data.cellPieces[landPoint.X][landPoint.Y].color != piece.color && hitStatus != 'no') {
                 this.data.legalMoves.push(landPoint);
@@ -239,7 +229,6 @@ function serverBoard(owner) {
             }
         }
         else if (hitStatus != 'must') {
-            //console.log(landPoint);
             this.data.legalMoves.push(landPoint);
             return piece.type != 'King';
         }
